@@ -2,6 +2,11 @@ body {
   font-family: 'Exo', sans-serif;
 }
 
+.progress-bar {
+    -webkit-transition: none !important;
+    transition: none !important;
+}
+
 @media(min-width:768px) {
   .ml-25 {
     margin-left: 25%;

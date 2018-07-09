@@ -170,6 +170,9 @@
                     </div>
                     <button type="button" id="btn-send" class="btn btn-warning btn-lg btn-block">Geld Senden</button>
                 </form>
+                <div class="progress mt-5 d-none">
+                    <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" style="width:0%;"></div>
+                </div>
             </div>
         </section>
 
@@ -217,7 +220,6 @@
                 $('[data-toggle="popover"]').popover()
             })
         $('#year').text(new Date().getFullYear());
-
 
              //smooth scrolling
              $("#main-nav a").on('click', function (event) {

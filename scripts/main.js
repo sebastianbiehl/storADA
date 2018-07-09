@@ -12,6 +12,7 @@ const message = document.querySelector("#message");
 let amount, receiver, balance, wallet1Address, wallet2Address
 let wallet1Balance, wallet2Balance, type, date, active
 
+let clickDisabled = false
 wallet1Balance = 1230
 wallet2Balance = 500
 active = 'wallet1'
@@ -127,51 +128,70 @@ const updateHistory = () => {
 }
 
  btnSend.addEventListener('click', (e) => {
-     if (document.querySelector("#receiver").value === '') {
-         document.querySelector("#receiver").classList.add("invalid-custom");
-         document.querySelector("#receiver").focus();
-         return
-     } else {
-         document.querySelector("#receiver").classList.remove('invalid-custom');
-     }
-     if (document.querySelector("#amount").value === '') {
-         document
-             .querySelector("#amount")
-             .classList.add("invalid-custom");
-         document.querySelector("#amount").focus();
-         return
-     } else {
-         document.querySelector("#amount").classList.remove("invalid-custom");
-     }
-    
-    dt = new Date();
-    receiver = document.querySelector("#receiver").value
+     if(clickDisabled === false) {
+         clickDisabled = true;
+     
+        if (document.querySelector("#receiver").value === '') {
+            document.querySelector("#receiver").classList.add("invalid-custom");
+            document.querySelector("#receiver").focus();
+            return
+        } else {
+            document.querySelector("#receiver").classList.remove('invalid-custom');
+        }
 
-     if ((receiver === wallet1Address && active === 'wallet1') || (receiver === wallet2Address && active === 'wallet2')) {
-        document.querySelector("#receiver").classList.add("is-invalid");
-        document.querySelector("#receiver").focus();
+        if (document.querySelector("#amount").value === '') {
+            document
+                .querySelector("#amount")
+                .classList.add("invalid-custom");
+            document.querySelector("#amount").focus();
+            return
+        } else {
+            document.querySelector("#amount").classList.remove("invalid-custom");
+        }
+        
+        dt = new Date();
+        receiver = document.querySelector("#receiver").value
+
+        if ((receiver === wallet1Address && active === 'wallet1') || (receiver === wallet2Address && active === 'wallet2')) {
+            document.querySelector("#receiver").classList.add("is-invalid");
+            document.querySelector("#receiver").focus();
+            return;
+        } else {
+            document.querySelector("#receiver").classList.remove('is-invalid');
+            document.querySelector("#receiver").classList.add("border-dark");
+        }
+        
+        amount = document.querySelector("#amount").value.replace(',', '.')
+        if (isNaN(Number(amount)) || amount > Number(balanceHTML.innerHTML.replace(",", ".")) || amount <= 0) {
+        document.querySelector("#amount").classList.add("is-invalid");
+        document.querySelector("#amount").focus();
         return;
-     } else {
-        document.querySelector("#receiver").classList.remove('is-invalid');
-        document.querySelector("#receiver").classList.add("border-dark");
-     }
-     amount = document.querySelector("#amount").value.replace(',', '.')
-     if (isNaN(Number(amount)) || amount > Number(balanceHTML.innerHTML.replace(",", ".")) || amount <= 0) {
-       document.querySelector("#amount").classList.add("is-invalid");
-       document.querySelector("#amount").focus();
-       return;
-     } else {
-       document.querySelector("#amount").classList.remove("is-invalid");
-       document.querySelector("#amount").classList.add("border-dark");
-     }
+        } else {
+        document.querySelector("#amount").classList.remove("is-invalid");
+        document.querySelector("#amount").classList.add("border-dark");
+        }
 
-    balance = Number((balanceHTML.innerHTML).replace(',', '.')) - Number(amount);
-    date = dt.getDate() + '.' + (Number(dt.getMonth()) + 1) + "." + dt.getFullYear();
-    type='senden';
-    balanceHTML.innerHTML = (Number(balance).toFixed(2)).replace('.', ',');
-    document.querySelector("#receiver").value = ''
-    document.querySelector("#amount").value = ''
-    message.value = ''
-    updateHistory();
+        btnSend.disabled = true
+        //progress bar
+        document.querySelector(".progress").classList.remove("d-none");
+        $(".progress-bar").animate({
+            width: "100%"
+        }, 2500);
+
+        setTimeout(() => {
+            $(".progress-bar").attr("style", "width: 0%");
+            document.querySelector(".progress").classList.add("d-none");
+            balance = Number((balanceHTML.innerHTML).replace(',', '.')) - Number(amount);
+            date = dt.getDate() + '.' + (Number(dt.getMonth()) + 1) + "." + dt.getFullYear();
+            type = 'senden';
+            balanceHTML.innerHTML = (Number(balance).toFixed(2)).replace('.', ',');
+            document.querySelector("#receiver").value = ''
+            document.querySelector("#amount").value = ''
+            message.value = ''
+            updateHistory();
+            clickDisabled = false;
+        }, 2501)
+        btnSend.disabled = false
+    }
  })
 
