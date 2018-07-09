@@ -129,7 +129,6 @@ const updateHistory = () => {
 
  btnSend.addEventListener('click', (e) => {
      if(clickDisabled === false) {
-         clickDisabled = true;
      
         if (document.querySelector("#receiver").value === '') {
             document.querySelector("#receiver").classList.add("invalid-custom");
@@ -171,7 +170,7 @@ const updateHistory = () => {
         document.querySelector("#amount").classList.add("border-dark");
         }
 
-        btnSend.disabled = true
+        clickDisabled = true
         //progress bar
         document.querySelector(".progress").classList.remove("d-none");
         $(".progress-bar").animate({
