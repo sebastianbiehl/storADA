@@ -181,6 +181,8 @@ const updateHistory = () => {
         setTimeout(() => {
             $(".progress-bar").attr("style", "width: 0%");
             document.querySelector(".progress").classList.add("d-none");
+            document.querySelector(".alert").classList.remove("d-none");
+            setTimeout(() => document.querySelector(".alert").classList.add("d-none"), 5000)
             balance = Number((balanceHTML.innerHTML).replace(',', '.')) - Number(amount);
             date = dt.getDate() + '.' + (Number(dt.getMonth()) + 1) + "." + dt.getFullYear();
             type = 'senden';
@@ -190,7 +192,7 @@ const updateHistory = () => {
             message.value = ''
             updateHistory();
             clickDisabled = false;
-        }, 2501)
+        }, 3500)
         btnSend.disabled = false
     }
  })
